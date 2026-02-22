@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
+    "@astrojs/vercel": "^9.0.4",
     "astro": "^5.17.1",
     "resend": "^6.9.1",
     "tailwindcss": "^4.1.11"
