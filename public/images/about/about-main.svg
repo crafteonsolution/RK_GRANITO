@@ -1,0 +1,18 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1100 800'>
+  <defs>
+    <linearGradient id='a' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0%' stop-color='#f8f8f8'/>
+      <stop offset='100%' stop-color='#dfdfdf'/>
+    </linearGradient>
+  </defs>
+  <rect width='1100' height='800' fill='url(#a)'/>
+  <rect x='80' y='80' width='940' height='640' rx='24' fill='#f1f1f1' stroke='#c9c9c9' stroke-width='8'/>
+  <g opacity='0.5'>
+    <path d='M80 290 H1020' stroke='#8a8a8a' stroke-width='6'/>
+    <path d='M80 510 H1020' stroke='#8a8a8a' stroke-width='6'/>
+    <path d='M320 80 V720' stroke='#8a8a8a' stroke-width='6'/>
+    <path d='M560 80 V720' stroke='#8a8a8a' stroke-width='6'/>
+    <path d='M800 80 V720' stroke='#8a8a8a' stroke-width='6'/>
+  </g>
+  <text x='550' y='420' text-anchor='middle' fill='#2a2a2a' font-size='48' font-family='Segoe UI, Arial' font-weight='600'>Residential Tile Flooring</text>
+</svg>

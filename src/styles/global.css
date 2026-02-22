@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+:root {
+  --rk-dark: #121212;
+  --rk-dark-soft: #242424;
+  --rk-light: #f7f7f6;
+  --rk-red: #db0000;
+  --rk-red-deep: #b10000;
+  --rk-silver: #d8d8d8;
+  --rk-silver-deep: #a9a9a9;
+  --rk-text-dark: #4b4b4b;
+  --rk-border: #e5e5e5;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  color: #171717;
+  background: linear-gradient(180deg, #ffffff, #fbfbfb 38%, #ffffff 100%);
+}
+
+.section-shell {
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+.luxury-overlay {
+  background: linear-gradient(180deg, rgba(18, 18, 18, 0.62) 0%, rgba(18, 18, 18, 0.35) 45%, rgba(18, 18, 18, 0.7) 100%);
+}
+
+.btn-lux {
+  @apply inline-flex items-center justify-center rounded-full px-6 py-2.5 text-xs font-semibold tracking-[0.12em] transition-all duration-300;
+  background: linear-gradient(135deg, var(--rk-red) 0%, var(--rk-red-deep) 100%);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(219, 0, 0, 0.2);
+}
+
+.btn-lux:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(219, 0, 0, 0.28);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
