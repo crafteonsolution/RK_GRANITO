@@ -119,22 +119,43 @@
 
           if (!isValid) return;
 
-          // Simulate submission
           submitBtn.disabled = true;
           btnText.classList.add("hidden");
           btnLoader.classList.remove("hidden");
 
+          if (statusDiv) statusDiv.textContent = "Sending...";
+          const formData = new FormData(form);
+          const payload = Object.fromEntries(formData.entries());
+
           try {
-            // Here you would typically use fetch() to send the data
-            // await fetch('/api/contact', { method: 'POST', ... })
+            const response = await fetch("/api/contact", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+              body: JSON.stringify(payload),
+            });
+            const data = await response.json().catch(() => ({}));
 
-            await new Promise((resolve) => setTimeout(resolve, 1500)); // Demo delay
+            if (!response.ok) {
+              const message =
+                data?.error || "Something went wrong. Please try again.";
+              if (statusDiv) {
+                statusDiv.textContent = message;
+                statusDiv.className =
+                  "rounded-lg p-4 text-sm font-medium bg-red-100 text-red-800";
+                statusDiv.classList.remove("hidden");
+              }
+              return;
+            }
 
-            statusDiv.textContent =
-              "Thank you! Your message has been sent successfully.";
-            statusDiv.className =
-              "rounded-lg p-4 text-sm font-medium bg-green-100 text-green-800";
-            statusDiv.classList.remove("hidden");
+            if (statusDiv) {
+              statusDiv.textContent = "Thanks! Your message has been sent.";
+              statusDiv.className =
+                "rounded-lg p-4 text-sm font-medium bg-green-100 text-green-800";
+              statusDiv.classList.remove("hidden");
+            }
             form.reset();
           } catch (error) {
             statusDiv.textContent =
