@@ -1,0 +1,39 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import ContactForm from "../components/ContactForm.astro";
+---
+
+<MainLayout
+  title="Contact Us | RK Granito"
+  description="Contact RK Granito for tile enquiries and export requirements."
+  overlayNav={true}
+>
+  <section class="relative h-[58vh] min-h-[380px]">
+    <img
+      src="/images/hero/head6.jpg"
+      alt="Contact RK Granito"
+      class="absolute inset-0 h-full w-full object-cover"
+    />
+    <div class="absolute inset-0 bg-black/60"></div>
+    <div
+      class="relative section-shell flex h-full items-center justify-center pt-20"
+    >
+      <h1
+        class="reveal text-4xl font-bold tracking-[0.25em] text-white sm:text-6xl md:text-7xl text-center"
+      >
+        CONTACT US
+      </h1>
+    </div>
+  </section>
+
+  <ContactForm />
+
+  <!-- <section class="pb-24">
+    <iframe
+      title="RK Granito map"
+      src="https://www.google.com/maps?q=Rajkot%20Gujarat%20India&output=embed"
+      class="h-[450px] w-full border-0"
+      loading="lazy"
+    ></iframe>
+  </section> -->
+</MainLayout>

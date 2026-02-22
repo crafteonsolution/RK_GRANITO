@@ -1,0 +1,238 @@
+---
+interface Props {
+  overlay?: boolean;
+}
+
+const { overlay = false } = Astro.props;
+---
+
+<header
+  id="site-header"
+  data-overlay={overlay ? "true" : "false"}
+  class:list={[
+    "fixed inset-x-0 top-0 z-50 border-b border-transparent transition-all duration-300",
+    overlay ? "bg-transparent" : "bg-[var(--rk-dark)]",
+  ]}
+>
+  <div class="section-shell flex items-center justify-between py-3 md:py-4">
+    <!-- Logo Left -->
+    <div class="flex-shrink-0">
+      <a href="/" class="group transition-transform hover:scale-[1.02]">
+        <img
+          src="/images/logo/rk-granito-logo.jpeg"
+          alt="RK Granito Logo"
+          class="h-18 w-auto xs:h-24 sm:h-28 md:h-32 lg:h-36 xl:h-44"
+        />
+      </a>
+    </div>
+
+    <!-- Desktop Nav Center -->
+    <nav class="hidden lg:flex items-center space-x-12">
+      <a
+        href="/"
+        class="text-[11px] font-bold uppercase tracking-[0.25em] text-white hover:text-[var(--rk-red)] transition-colors"
+        >Home</a
+      >
+      <a
+        href="/company"
+        class="text-[11px] font-bold uppercase tracking-[0.25em] text-white hover:text-[var(--rk-red)] transition-colors"
+        >Company</a
+      >
+      <a
+        href="/products"
+        class="text-[11px] font-bold uppercase tracking-[0.25em] text-white hover:text-[var(--rk-red)] transition-colors"
+        >Products</a
+      >
+      <a
+        href="/catalogue"
+        class="text-[11px] font-bold uppercase tracking-[0.25em] text-white hover:text-[var(--rk-red)] transition-colors"
+        >Catalogue</a
+      >
+    </nav>
+
+    <!-- Actions Right -->
+    <div class="flex items-center space-x-3 md:space-x-6">
+      <button
+        id="menu-toggle"
+        type="button"
+        class="group flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white transition hover:bg-[var(--rk-red)] hover:border-transparent"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span class="block relative w-5 h-4">
+          <span
+            class="absolute top-0 left-0 w-full h-0.5 bg-current transition-all duration-300"
+          ></span>
+          <span
+            class="absolute top-1/2 left-0 w-3/4 h-0.5 bg-current -translate-y-1/2 transition-all duration-300"
+          ></span>
+          <span
+            class="absolute bottom-0 left-0 w-full h-0.5 bg-current transition-all duration-300"
+          ></span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="sidebar-overlay"
+    class="fixed inset-0 z-[60] hidden bg-black/50 backdrop-blur-sm transition-opacity duration-300"
+  >
+  </div>
+  <div
+    id="mobile-menu"
+    class="fixed inset-y-0 right-0 z-[70] w-full max-w-[320px] translate-x-full overflow-y-auto bg-[var(--rk-dark)] p-8 shadow-2xl transition-transform duration-300 ease-in-out sm:max-w-xs"
+  >
+    <div
+      class="relative flex flex-col items-center border-b border-white/10 pb-10"
+    >
+      <button
+        id="close-menu"
+        type="button"
+        class="absolute -top-2 -right-2 flex h-10 w-10 items-center justify-center rounded-full bg-white/5 text-white transition hover:bg-white hover:text-[var(--rk-dark)]"
+        aria-label="Close menu"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="h-6 w-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+
+      <div class="mt-4">
+        <img
+          src="/images/logo/rk-granito-logo.jpeg"
+          alt="RK Granito Logo"
+          class="h-24 w-auto"
+        />
+      </div>
+
+      <div class="mt-8 flex items-center gap-3 w-full px-2">
+        <div
+          class="h-[1px] flex-1 bg-gradient-to-r from-transparent to-white/20"
+        >
+        </div>
+        <p
+          class="text-[8px] uppercase tracking-[0.35em] text-[var(--rk-red)] font-bold whitespace-nowrap"
+        >
+          Engineered for Elegant Living
+        </p>
+        <div
+          class="h-[1px] flex-1 bg-gradient-to-l from-transparent to-white/20"
+        >
+        </div>
+      </div>
+    </div>
+
+    <nav class="mt-10 flex flex-col space-y-2">
+      <a
+        href="/"
+        class="group flex items-center justify-between rounded-lg px-4 py-3 text-lg font-medium text-white transition hover:bg-[var(--rk-red)]"
+      >
+        Home
+        <span class="opacity-0 transition group-hover:opacity-100">→</span>
+      </a>
+      <a
+        href="/company"
+        class="group flex items-center justify-between rounded-lg px-4 py-3 text-lg font-medium text-white transition hover:bg-[var(--rk-red)]"
+      >
+        Company
+        <span class="opacity-0 transition group-hover:opacity-100">→</span>
+      </a>
+      <a
+        href="/products"
+        class="group flex items-center justify-between rounded-lg px-4 py-3 text-lg font-medium text-white transition hover:bg-[var(--rk-red)]"
+      >
+        Products
+        <span class="opacity-0 transition group-hover:opacity-100">→</span>
+      </a>
+      <a
+        href="/catalogue"
+        class="group flex items-center justify-between rounded-lg px-4 py-3 text-lg font-medium text-white transition hover:bg-[var(--rk-red)]"
+      >
+        Catalogue
+        <span class="opacity-0 transition group-hover:opacity-100">→</span>
+      </a>
+      <!-- <a
+        href="/career"
+        class="group flex items-center justify-between rounded-lg px-4 py-3 text-lg font-medium text-white transition hover:bg-[var(--rk-red)]"
+      >
+        Career
+        <span class="opacity-0 transition group-hover:opacity-100">→</span>
+      </a> -->
+      <a
+        href="/contact"
+        class="group flex items-center justify-between rounded-lg px-4 py-3 text-lg font-medium text-white transition hover:bg-[var(--rk-red)]"
+      >
+        Contact
+        <span class="opacity-0 transition group-hover:opacity-100">→</span>
+      </a>
+    </nav>
+
+    <div class="mt-12 space-y-6 border-t border-white/10 pt-8 text-neutral-400">
+      <div>
+        <p class="text-[10px] uppercase tracking-[0.2em]">Contact Us</p>
+        <p class="mt-2 text-sm text-white">+91 9106865089</p>
+        <p class="text-sm text-white">Export@Rkgranito.com</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  const header = document.getElementById("site-header");
+  const openButton = document.getElementById("menu-toggle");
+  const closeButton = document.getElementById("close-menu");
+  const menu = document.getElementById("mobile-menu");
+  const overlay = document.getElementById("sidebar-overlay");
+  const overlayMode = header?.getAttribute("data-overlay") === "true";
+
+  const toggleMenu = (show) => {
+    if (!menu || !overlay) return;
+    if (show) {
+      overlay.classList.remove("hidden");
+      setTimeout(() => {
+        overlay.classList.add("opacity-100");
+        menu.classList.remove("translate-x-full");
+      }, 10);
+      document.body.style.overflow = "hidden";
+    } else {
+      overlay.classList.remove("opacity-100");
+      menu.classList.add("translate-x-full");
+      setTimeout(() => {
+        overlay.classList.add("hidden");
+      }, 300);
+      document.body.style.overflow = "";
+    }
+  };
+
+  openButton?.addEventListener("click", () => toggleMenu(true));
+  closeButton?.addEventListener("click", () => toggleMenu(false));
+  overlay?.addEventListener("click", () => toggleMenu(false));
+
+  const updateHeader = () => {
+    if (!header) return;
+    if (!overlayMode) return;
+    if (window.scrollY > 60) {
+      header.classList.remove("bg-transparent");
+      header.classList.add("bg-[var(--rk-dark)]");
+      header.classList.add("border-white/10");
+    } else {
+      header.classList.add("bg-transparent");
+      header.classList.remove("bg-[var(--rk-dark)]");
+      header.classList.remove("border-white/10");
+    }
+  };
+
+  updateHeader();
+  window.addEventListener("scroll", updateHeader, { passive: true });
+</script>

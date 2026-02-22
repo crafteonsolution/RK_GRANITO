@@ -1,0 +1,85 @@
+<section class="relative min-h-screen overflow-hidden">
+  <div class="absolute inset-0">
+    <div class="slide slide-1"></div>
+    <div class="slide slide-2"></div>
+    <div class="slide slide-3"></div>
+    <div class="luxury-overlay absolute inset-0"></div>
+  </div>
+  <div
+    class="relative section-shell flex min-h-screen items-center justify-center text-center"
+  >
+    <div class="reveal text-white">
+      <h1
+        class="text-4xl font-light leading-tight sm:text-6xl md:text-7xl lg:text-8xl"
+      >
+        A Relaxing Experience
+      </h1>
+      <p
+        class="mt-6 text-lg uppercase tracking-[0.4em] text-neutral-200 sm:text-2xl"
+      >
+        Comfort Living
+      </p>
+      <a
+        href="#about-section"
+        class="mt-10 inline-flex items-center gap-2 text-sm uppercase tracking-[0.2em] text-white/90 transition hover:text-[var(--rk-red)]"
+      >
+        Explore More
+        <span
+          class="inline-block h-8 w-8 rounded-full border border-white/50 text-center leading-8 transition-colors duration-300 group-hover:border-[var(--rk-red)]"
+          >↓</span
+        >
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    animation: heroFade 18s infinite;
+    transform: scale(1.03);
+  }
+
+  .slide-1 {
+    background-image: url("/images/hero/head7.jpeg");
+  }
+
+  .slide-2 {
+    background-image: url("/images/hero/head8.jpeg");
+    animation-delay: 6s;
+  }
+
+  .slide-3 {
+    background-image: url("/images/hero/head5.jpg");
+    animation-delay: 12s;
+  }
+
+  .slide-4 {
+    background-image: url("/images/hero/head5.jpg");
+    animation-delay: 12s;
+  }
+
+  .slide-5 {
+    background-image: url("/images/hero/head5.jpg");
+    animation-delay: 12s;
+  }
+
+  @keyframes heroFade {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    8%,
+    28% {
+      opacity: 1;
+    }
+    40%,
+    90% {
+      opacity: 0;
+    }
+  }
+</style>
