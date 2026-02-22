@@ -7,7 +7,7 @@ import MainLayout from "../layouts/MainLayout.astro";
     description="Learn about RK Granito's journey, our commitment to quality, and our expansion into retail with PLLARS."
 >
     <!-- Hero Section -->
-    <section class="relative h-[50vh] min-h-[400px]">
+    <section class="relative h-[45vh] lg:h-[60vh] min-h-[400px]">
         <img
             src="/images/hero/head4.jpg"
             alt="RK Granito Company"
@@ -100,85 +100,6 @@ import MainLayout from "../layouts/MainLayout.astro";
                     >
                         Countries Served Globally
                     </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PLLARS Retail Section -->
-    <section class="bg-neutral-900 py-20 lg:py-32 text-white">
-        <div class="section-shell">
-            <div class="grid gap-16 lg:grid-cols-12 items-center">
-                <div class="lg:col-span-7 reveal">
-                    <p
-                        class="text-xs font-bold uppercase tracking-[0.3em] text-[var(--rk-red)] mb-4"
-                    >
-                        Retail Expansion & Innovation
-                    </p>
-                    <h2 class="text-4xl font-bold sm:text-5xl mb-8">
-                        Introducing PLLARS
-                    </h2>
-
-                    <div
-                        class="space-y-6 text-lg text-neutral-300 leading-relaxed"
-                    >
-                        <p>
-                            In addition to being one of India’s prominent
-                            exporters, our group has recently expanded into the
-                            retail sector with a new venture — <span
-                                class="text-white font-bold">PLLARS</span
-                            >.
-                        </p>
-                        <p>
-                            PLLARS is an omni-channel retail initiative crafted
-                            to deliver beautifully designed, high-quality
-                            ceramic tiles and sanitaryware products to modern
-                            Indian customers.
-                        </p>
-
-                        <div class="grid gap-4 mt-12 sm:grid-cols-2">
-                            {
-                                [
-                                    "Access detailed product info",
-                                    "Compare products easily",
-                                    "Estimate budgets accurately",
-                                    "Save time while shopping",
-                                    "Make informed decisions",
-                                ].map((item) => (
-                                    <div class="flex items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/10">
-                                        <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--rk-red)] text-xs text-white">
-                                            ✓
-                                        </span>
-                                        <span class="text-sm font-medium">
-                                            {item}
-                                        </span>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-5 reveal mt-12 lg:mt-16">
-                    <div
-                        class="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm"
-                    >
-                        <h3 class="text-2xl font-bold mb-6">
-                            Omni-Channel Experience
-                        </h3>
-                        <p class="text-neutral-400 leading-relaxed mb-8">
-                            Our goal is to bridge the gap between digital and
-                            in-store experiences by integrating smart technology
-                            tools. The first PLLARS store is located in Rajkot,
-                            with plans to expand into multiple cities in the
-                            near future.
-                        </p>
-                        <a
-                            href="/contact"
-                            class="btn-lux inline-block text-center w-full"
-                            >Find Our Store</a
-                        >
-                    </div>
                 </div>
             </div>
         </div>
