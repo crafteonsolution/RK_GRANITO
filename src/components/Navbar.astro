@@ -1,10 +1,12 @@
 ---
+import { siteConfig } from "../config/site";
+
 interface Props {
   overlay?: boolean;
 }
 
 const { overlay = false } = Astro.props;
-const { PUBLIC_CONTACT_EMAIL, PUBLIC_CONTACT_PHONE } = import.meta.env;
+const { contactEmail, contactPhone } = siteConfig;
 ---
 
 <header
@@ -194,8 +196,8 @@ const { PUBLIC_CONTACT_EMAIL, PUBLIC_CONTACT_PHONE } = import.meta.env;
     <div class="mt-12 space-y-6 border-t border-white/10 pt-8 text-neutral-400">
       <div>
         <p class="text-[10px] uppercase tracking-[0.2em]">Contact Us</p>
-        <p class="mt-2 text-sm text-white">{PUBLIC_CONTACT_PHONE}</p>
-        <p class="text-sm text-white">{PUBLIC_CONTACT_EMAIL}</p>
+        <p class="mt-2 text-sm text-white">{contactPhone}</p>
+        <p class="text-sm text-white">{contactEmail}</p>
       </div>
     </div>
   </div>

@@ -1,10 +1,12 @@
 ---
+import { siteConfig } from "../config/site";
+
 const {
-  PUBLIC_CONTACT_EMAIL,
-  PUBLIC_CONTACT_PHONE,
-  PUBLIC_HEAD_OFFICE_ADDRESS,
-  PUBLIC_MFG_UNIT_ADDRESS,
-} = import.meta.env;
+  contactEmail,
+  contactPhone,
+  headOfficeAddress,
+  manufacturingUnitAddress,
+} = siteConfig;
 ---
 
 <section class="section-shell py-20 sm:py-24">
@@ -196,13 +198,13 @@ const {
           <p class="text-xs uppercase tracking-[0.2em] text-neutral-400">
             Phone Number
           </p>
-          <p class="mt-2 text-lg">{PUBLIC_CONTACT_PHONE}</p>
+          <p class="mt-2 text-lg">{contactPhone}</p>
         </div>
         <div>
           <p class="text-xs uppercase tracking-[0.2em] text-neutral-400">
             Email Address
           </p>
-          <p class="mt-2 text-lg">{PUBLIC_CONTACT_EMAIL}</p>
+          <p class="mt-2 text-lg">{contactEmail}</p>
         </div>
         <div>
           <p class="text-xs uppercase tracking-[0.2em] text-neutral-400">
@@ -210,7 +212,7 @@ const {
           </p>
           <p
             class="mt-2 text-lg"
-            set:html={PUBLIC_HEAD_OFFICE_ADDRESS?.replace(", ", ",<br />")}
+            set:html={headOfficeAddress?.replace(", ", ",<br />")}
           />
         </div>
         <div>
@@ -219,7 +221,7 @@ const {
           </p>
           <p
             class="mt-2 text-lg"
-            set:html={PUBLIC_MFG_UNIT_ADDRESS?.replace(", ", ",<br />")}
+            set:html={manufacturingUnitAddress?.replace(", ", ",<br />")}
           />
         </div>
       </div>

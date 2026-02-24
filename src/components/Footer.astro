@@ -1,10 +1,12 @@
 ---
+import { siteConfig } from "../config/site";
+
 const {
-  PUBLIC_CONTACT_EMAIL,
-  PUBLIC_CONTACT_PHONE,
-  PUBLIC_HEAD_OFFICE_ADDRESS,
-  PUBLIC_MFG_UNIT_ADDRESS,
-} = import.meta.env;
+  contactEmail,
+  contactPhone,
+  headOfficeAddress,
+  manufacturingUnitAddress,
+} = siteConfig;
 ---
 
 <footer
@@ -81,11 +83,11 @@ const {
           <div class="space-y-4 text-sm text-neutral-400">
             <p class="flex items-center gap-2">
               <span class="text-[var(--rk-red)] text-xs">●</span>
-              {PUBLIC_CONTACT_EMAIL}
+              {contactEmail}
             </p>
             <p class="flex items-center gap-2">
               <span class="text-[var(--rk-red)] text-xs">●</span>
-              {PUBLIC_CONTACT_PHONE}
+              {contactPhone}
             </p>
           </div>
         </div>
@@ -103,7 +105,7 @@ const {
               </p>
               <p
                 class="leading-relaxed"
-                set:html={PUBLIC_HEAD_OFFICE_ADDRESS?.replace(", ", ",<br />")}
+                set:html={headOfficeAddress?.replace(", ", ",<br />")}
               />
             </div>
             <div>
@@ -112,7 +114,7 @@ const {
               </p>
               <p
                 class="leading-relaxed"
-                set:html={PUBLIC_MFG_UNIT_ADDRESS?.replace(", ", ",<br />")}
+                set:html={manufacturingUnitAddress?.replace(", ", ",<br />")}
               />
             </div>
           </div>
