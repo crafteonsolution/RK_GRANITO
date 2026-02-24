@@ -1,5 +1,8 @@
 ---
-import { readdirSync } from "node:fs";
+import { readdirSync, existsSync } from "node:fs";
+import path from "node:path";
+
+const PRODUCT_DIR = path.join(process.cwd(), "public", "images", "product");
 
 const FINISH_ORDER = ["Glossy", "High Glossy", "Matt"] as const;
 type Finish = (typeof FINISH_ORDER)[number];
@@ -11,7 +14,7 @@ type Product = {
   src: string;
 };
 
-const PRODUCT_DIR = new URL("../../public/images/product/", import.meta.url);
+// const PRODUCT_DIR = new URL("../../public/images/product/", import.meta.url);
 const IMAGE_EXT_REGEX = /\.(avif|webp|png|jpe?g)$/i;
 
 const toBaseName = (filename: string) => {
@@ -47,11 +50,15 @@ const toDisplayName = (baseName: string) =>
 let files: string[] = [];
 
 try {
-  files = readdirSync(PRODUCT_DIR, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && IMAGE_EXT_REGEX.test(entry.name))
-    .map((entry) => entry.name);
+  if (!existsSync(PRODUCT_DIR)) {
+    console.warn("[ProductTabs] Directory not found:", PRODUCT_DIR);
+  } else {
+    files = readdirSync(PRODUCT_DIR, { withFileTypes: true })
+      .filter((entry) => entry.isFile() && IMAGE_EXT_REGEX.test(entry.name))
+      .map((entry) => entry.name);
+  }
 } catch (error) {
-  console.warn("[ProductTabs] Could not read product image directory:", PRODUCT_DIR.pathname, error);
+  console.warn("[ProductTabs] Could not read product image directory:", PRODUCT_DIR, error);
   files = [];
 }
 
