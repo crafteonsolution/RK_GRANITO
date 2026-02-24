@@ -1,0 +1,134 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+
+const catalogues = [
+    {
+        title: "Sanitaryware Collection",
+        link: "https://drive.google.com/drive/folders/1xWmP1amJsppwhUguwGBWlCjQGwD2RWmA",
+        description: "Premium closets, basins, and sanitary solutions.",
+    },
+    {
+        title: "Floor Tiles Series",
+        link: "https://drive.google.com/drive/folders/1Y48TzMoTRm9NricsiEG5ABGt8OX22lP8",
+        description:
+            "Exquisite GVT, PGVT, and vitrified tiles for elegant flooring.",
+    },
+    {
+        title: "Wall Tiles Collection",
+        link: "https://drive.google.com/drive/folders/1KY5G2GVVWd7i7kWZ_hHMqQ5zNk4ZvdX5",
+        description: "Beautifully crafted ceramic and wall surface solutions.",
+    },
+];
+---
+
+<MainLayout
+    title="Catalogue | RK Granito"
+    description="Download our latest product catalogues and explore our full range of tile and sanitaryware solutions."
+>
+    <!-- Hero Section -->
+    <section class="relative h-[45vh] lg:h-[60vh] min-h-[400px]">
+        <img
+            src="/images/hero/head6.jpg"
+            alt="RK Granito Catalogues"
+            class="absolute inset-0 h-full w-full object-cover"
+        />
+        <div class="absolute inset-0 bg-black/60"></div>
+        <div
+            class="relative section-shell flex h-full items-center justify-center pt-24 lg:pt-32"
+        >
+            <div class="text-center">
+                <h1
+                    class="reveal text-4xl font-bold tracking-[0.2em] text-white sm:text-6xl md:text-7xl uppercase"
+                >
+                    Catalogues
+                </h1>
+                <p
+                    class="mt-4 text-neutral-300 max-w-2xl mx-auto reveal tracking-wide"
+                >
+                    Download our digital portfolios for detailed designs and
+                    specifications.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Catalogue List -->
+    <section class="section-shell py-24 sm:py-32">
+        <div class="grid gap-10 md:gap-14 md:grid-cols-2 lg:grid-cols-3">
+            {
+                catalogues.map((item) => (
+                    <div class="reveal group relative overflow-hidden rounded-3xl border border-neutral-200 bg-white p-8 transition-all hover:border-[var(--rk-red)] hover:shadow-2xl hover:shadow-red-900/5">
+                        <div class="flex flex-col h-full">
+                            <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-neutral-100 text-[var(--rk-dark)] transition-colors group-hover:bg-[var(--rk-red)] group-hover:text-white">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-8 w-8"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                                    />
+                                </svg>
+                            </div>
+
+                            <h3 class="text-xl font-bold text-neutral-900 group-hover:text-[var(--rk-red)] transition-colors">
+                                {item.title}
+                            </h3>
+                            <p class="mt-3 text-sm text-neutral-500 leading-relaxed">
+                                {item.description}
+                            </p>
+
+                            <div class="mt-auto pt-8">
+                                <a
+                                    href={item.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="flex w-full items-center justify-center gap-3 rounded-full bg-[var(--rk-dark)] py-3.5 text-[10px] font-bold uppercase tracking-widest text-white transition-all hover:bg-[var(--rk-red)]"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="h-4 w-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        />
+                                    </svg>
+                                    View Folder
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section-shell pb-20">
+        <div
+            class="reveal rounded-[3rem] bg-[var(--rk-dark)] p-12 text-center text-white"
+        >
+            <h2 class="text-3xl font-bold sm:text-4xl">
+                Need a Custom Brochure?
+            </h2>
+            <p class="mt-4 text-neutral-400 max-w-xl mx-auto">
+                Get in touch with our team for personalized product
+                specifications and high-resolution design files.
+            </p>
+            <div class="mt-10">
+                <a href="/contact" class="btn-lux">Request Custom Info</a>
+            </div>
+        </div>
+    </section>
+</MainLayout>
