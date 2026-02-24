@@ -44,9 +44,16 @@ const toDisplayName = (baseName: string) =>
     .replace(/\s{2,}/g, " ")
     .trim();
 
-const files = readdirSync(PRODUCT_DIR, { withFileTypes: true })
-  .filter((entry) => entry.isFile() && IMAGE_EXT_REGEX.test(entry.name))
-  .map((entry) => entry.name);
+let files: string[] = [];
+
+try {
+  files = readdirSync(PRODUCT_DIR, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && IMAGE_EXT_REGEX.test(entry.name))
+    .map((entry) => entry.name);
+} catch (error) {
+  console.warn("[ProductTabs] Could not read product image directory:", PRODUCT_DIR.pathname, error);
+  files = [];
+}
 
 const products: Product[] = files
   .map((filename) => {
