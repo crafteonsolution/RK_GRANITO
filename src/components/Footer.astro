@@ -1,3 +1,14 @@
+---
+import { siteConfig } from "../config/site";
+
+const {
+  contactEmail,
+  contactPhone,
+  headOfficeAddress,
+  manufacturingUnitAddress,
+} = siteConfig;
+---
+
 <footer
   class="mt-4 bg-[var(--rk-dark)] py-12 text-white border-t border-white/5"
 >
@@ -71,10 +82,12 @@
           </h4>
           <div class="space-y-4 text-sm text-neutral-400">
             <p class="flex items-center gap-2">
-              <span class="text-[var(--rk-red)] text-xs">●</span> Export@Rkgranito.com
+              <span class="text-[var(--rk-red)] text-xs">●</span>
+              {contactEmail}
             </p>
             <p class="flex items-center gap-2">
-              <span class="text-[var(--rk-red)] text-xs">●</span> +91 9106865089
+              <span class="text-[var(--rk-red)] text-xs">●</span>
+              {contactPhone}
             </p>
           </div>
         </div>
@@ -90,17 +103,19 @@
               <p class="text-[10px] uppercase font-bold text-neutral-500 mb-1">
                 Head Office
               </p>
-              <p class="leading-relaxed">
-                101 Madhav, 150 Feet Ring Road,<br /> Ayodhya Chowk, Rajkot 360007
-              </p>
+              <p
+                class="leading-relaxed"
+                set:html={headOfficeAddress?.replace(", ", ",<br />")}
+              />
             </div>
             <div>
               <p class="text-[10px] uppercase font-bold text-neutral-500 mb-1">
                 Manufacturing Unit
               </p>
-              <p class="leading-relaxed">
-                Lilapar Chokadi, Navagam Canal Road,<br /> Morbi 363641
-              </p>
+              <p
+                class="leading-relaxed"
+                set:html={manufacturingUnitAddress?.replace(", ", ",<br />")}
+              />
             </div>
           </div>
         </div>

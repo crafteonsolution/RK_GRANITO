@@ -1,9 +1,12 @@
 ---
+import { siteConfig } from "../config/site";
+
 interface Props {
   overlay?: boolean;
 }
 
 const { overlay = false } = Astro.props;
+const { contactEmail, contactPhone } = siteConfig;
 ---
 
 <header
@@ -14,20 +17,27 @@ const { overlay = false } = Astro.props;
     overlay ? "bg-transparent" : "bg-[var(--rk-dark)]",
   ]}
 >
-  <div class="section-shell flex items-center justify-between py-3 md:py-4">
-    <!-- Logo Left -->
-    <div class="flex-shrink-0">
+  <div
+    class="section-shell flex items-center justify-between py-2 md:py-1.5 lg:py-1.5"
+  >
+    <!-- Mobile Menu Spacer (Hidden on Desktop) -->
+    <div class="flex flex-1 lg:hidden"></div>
+
+    <!-- logo -->
+    <div class="flex-shrink-0 lg:flex-1 lg:flex lg:justify-start">
       <a href="/" class="group transition-transform hover:scale-[1.02]">
         <img
           src="/images/logo/rk-granito-logo.jpeg"
           alt="RK Granito Logo"
-          class="h-18 w-auto xs:h-24 sm:h-28 md:h-32 lg:h-36 xl:h-44"
+          class="h-20 w-auto sm:h-22 md:h-24 lg:h-24 xl:h-28"
         />
       </a>
     </div>
 
     <!-- Desktop Nav Center -->
-    <nav class="hidden lg:flex items-center space-x-12">
+    <nav
+      class="hidden lg:flex lg:flex-auto items-center justify-center space-x-12"
+    >
       <a
         href="/"
         class="text-[11px] font-bold uppercase tracking-[0.25em] text-white hover:text-[var(--rk-red)] transition-colors"
@@ -48,10 +58,15 @@ const { overlay = false } = Astro.props;
         class="text-[11px] font-bold uppercase tracking-[0.25em] text-white hover:text-[var(--rk-red)] transition-colors"
         >Catalogue</a
       >
+      <a
+        href="/contact"
+        class="text-[11px] font-bold uppercase tracking-[0.25em] text-white hover:text-[var(--rk-red)] transition-colors"
+        >Contact</a
+      >
     </nav>
 
     <!-- Actions Right -->
-    <div class="flex items-center space-x-3 md:space-x-6">
+    <div class="flex flex-1 items-center justify-end space-x-3 md:space-x-6">
       <button
         id="menu-toggle"
         type="button"
@@ -181,8 +196,8 @@ const { overlay = false } = Astro.props;
     <div class="mt-12 space-y-6 border-t border-white/10 pt-8 text-neutral-400">
       <div>
         <p class="text-[10px] uppercase tracking-[0.2em]">Contact Us</p>
-        <p class="mt-2 text-sm text-white">+91 9106865089</p>
-        <p class="text-sm text-white">Export@Rkgranito.com</p>
+        <p class="mt-2 text-sm text-white">{contactPhone}</p>
+        <p class="text-sm text-white">{contactEmail}</p>
       </div>
     </div>
   </div>

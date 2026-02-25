@@ -1,242 +1,284 @@
 ---
-const tabs = [
-  {
-    label: "GVT/PGVT",
-    type: "table",
-    headers: ["Size", "Finish Available"],
-    rows: [
-      ["30x60 cm", "Glossy, Matt"],
-      [
-        "60x120 cm",
-        "Glossy, Matt, Satin Matt, High Gloss, Sugar Finish, Carving Matt",
-      ],
-      ["80x80 cm", "Glossy, Matt, Satin Matt, High Gloss"],
-      ["80x160 cm", "Glossy, Matt, Satin Matt, High Gloss, Carving Matt"],
-      ["120x120 cm", "Glossy, Matt, Satin Matt"],
-      ["100x100 cm", "Glossy, Matt, Satin Matt"],
-      ["120x240 cm", "Glossy, Matt, Satin Matt, High Gloss"],
-      ["20x120 cm", "Matt, Carving Matt"],
-    ],
-  },
-  {
-    label: "CERAMIC",
-    type: "table",
-    headers: ["Size", "Finish Available"],
-    rows: [
-      ["20x60 cm", "Glossy, Matt"],
-      ["30x45 cm", "Glossy, Matt"],
-    ],
-  },
-  {
-    label: "ELEVATION",
-    type: "table",
-    headers: ["Size", "Finish Available"],
-    rows: [
-      ["30x45 cm", "Matt Punch"],
-      ["30x60 cm", "Matt Punch"],
-    ],
-  },
-  {
-    label: "PARKING",
-    type: "table",
-    headers: ["Size", "Finish Available"],
-    rows: [
-      ["30x30 cm", "Matt, Rustic"],
-      ["40x40 cm", "Matt, Rustic"],
-    ],
-  },
-  {
-    label: "SANITARY WARES",
-    type: "list",
-    headers: ["Product Type"],
-    rows: [
-      "One Piece Closet",
-      "Wall Hung Closet",
-      "One Piece Basin",
-      "Basin with Pedestal",
-      "Table Top",
-      "Washbasin",
-    ],
-  },
-  {
-    label: "MOSAICS 30X30",
-    type: "list",
-    headers: ["Design Type"],
-    rows: [
-      "Hexagone",
-      "Square",
-      "Diamond",
-      "3D Diamond",
-      "Rectangular",
-      "Herringbone",
-      "Short Accord",
-      "Chevron",
-    ],
-  },
-];
+import { readdirSync, existsSync } from "node:fs";
+import path from "node:path";
+
+const PRODUCT_DIR = path.join(process.cwd(), "public", "images", "product");
+
+const FINISH_ORDER = ["Glossy", "High Glossy", "Matt"] as const;
+type Finish = (typeof FINISH_ORDER)[number];
+
+type Product = {
+  name: string;
+  size: string;
+  finish: Finish;
+  src: string;
+};
+
+// const PRODUCT_DIR = new URL("../../public/images/product/", import.meta.url);
+const IMAGE_EXT_REGEX = /\.(avif|webp|png|jpe?g)$/i;
+
+const toBaseName = (filename: string) => {
+  let value = filename;
+  value = value.replace(IMAGE_EXT_REGEX, "");
+  value = value.replace(IMAGE_EXT_REGEX, "");
+  return value;
+};
+
+const normalizeSize = (rawSize: string) => {
+  const compact = rawSize.replace(/\s+/g, "").replace(/X/g, "x");
+  return `${compact} cm`;
+};
+
+const normalizeFinish = (baseName: string): Finish => {
+  const normalized = baseName.replace(/[_-]+/g, " ");
+  if (/\bhigh\s*glossy\b/i.test(normalized)) return "High Glossy";
+  if (/\bmatt\b/i.test(normalized)) return "Matt";
+  return "Glossy";
+};
+
+const toDisplayName = (baseName: string) =>
+  baseName
+    .replace(/[_-]+/g, " ")
+    .replace(/\bhigh\s*glossy\b|\bglossy\b|\bmatt\b/gi, "")
+    .replace(/\(\d+\)/g, "")
+    .replace(/\bface\s*\d+\b/gi, "")
+    .replace(/\b\d{2,3}\s*[xX]\s*\d{2,3}\b/g, "")
+    .replace(/\bjpg\b|\bjpeg\b/gi, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+
+let files: string[] = [];
+
+try {
+  if (!existsSync(PRODUCT_DIR)) {
+    console.warn("[ProductTabs] Directory not found:", PRODUCT_DIR);
+  } else {
+    files = readdirSync(PRODUCT_DIR, { withFileTypes: true })
+      .filter((entry) => entry.isFile() && IMAGE_EXT_REGEX.test(entry.name))
+      .map((entry) => entry.name);
+  }
+} catch (error) {
+  console.warn("[ProductTabs] Could not read product image directory:", PRODUCT_DIR, error);
+  files = [];
+}
+
+const products: Product[] = files
+  .map((filename) => {
+    const baseName = toBaseName(filename);
+    const normalized = baseName.replace(/[_-]+/g, " ");
+    const sizeMatch = normalized.match(/\b\d{2,3}\s*[xX]\s*\d{2,3}\b/);
+
+    return {
+      name: toDisplayName(baseName),
+      size: sizeMatch ? normalizeSize(sizeMatch[0]) : "Premium size",
+      finish: normalizeFinish(baseName),
+      src: `/images/product/${filename}`,
+    };
+  })
+  .sort((a, b) => {
+    const finishOrder = FINISH_ORDER.indexOf(a.finish) - FINISH_ORDER.indexOf(b.finish);
+    if (finishOrder !== 0) return finishOrder;
+    return a.name.localeCompare(b.name);
+  });
+
+const filters = ["All", ...FINISH_ORDER] as const;
 ---
 
-<section id="product-section" class="section-shell pb-28 pt-12">
-  <div class="reveal text-center mb-16">
-    <p
-      class="text-xs font-bold uppercase tracking-[0.4em] text-[var(--rk-red)] mb-3"
-    >
+<section id="product-section" class="section-shell pb-28 pt-10 sm:pt-14">
+  <div class="reveal text-center">
+    <p class="mb-3 text-xs font-bold uppercase tracking-[0.35em] text-[var(--rk-red)]">
       Our Collection
     </p>
     <h2 class="text-4xl font-semibold text-neutral-900 sm:text-5xl">
-      Product Portfolio
+      Premium Product Gallery
     </h2>
-    <div class="mx-auto mt-4 h-1 w-20 bg-[var(--rk-red)] rounded-full"></div>
+    <p class="mx-auto mt-4 max-w-3xl text-sm text-neutral-600 sm:text-base">
+      Inspired by premium tile catalog layouts and built from your local product image library.
+      Tap any product to open full preview.
+    </p>
   </div>
 
-  <div
-    class="reveal bg-neutral-50 rounded-[2.5rem] p-4 sm:p-8 lg:p-12 border border-neutral-200/60 shadow-xl shadow-neutral-200/40"
-  >
-    <div class="overflow-x-auto pb-4 scrollbar-hide">
-      <div
-        id="tab-buttons"
-        class="flex min-w-max items-center justify-between gap-1 rounded-2xl bg-white p-1.5 shadow-sm border border-neutral-100"
-      >
+  <div class="mt-10 rounded-[2rem] border border-neutral-200/80 bg-white p-4 shadow-xl shadow-neutral-200/40 sm:p-8">
+    <div class="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-200 pb-5">
+      <div class="flex flex-wrap gap-2">
         {
-          tabs.map((tab, idx) => (
+          filters.map((filter, index) => (
             <button
-              class:list={[
-                "tab-btn relative flex-1 rounded-xl px-6 py-4 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] transition-all duration-500",
-                idx === 0
-                  ? "bg-[var(--rk-dark)] text-white shadow-lg shadow-black/20"
-                  : "text-neutral-500 hover:text-[var(--rk-red)] hover:bg-neutral-50",
-              ]}
-              data-tab-index={idx}
               type="button"
+              data-product-filter={filter}
+              class:list={[
+                "rounded-full border px-4 py-2 text-[11px] font-bold uppercase tracking-[0.16em] transition",
+                index === 0
+                  ? "border-transparent bg-[var(--rk-dark)] text-white"
+                  : "border-neutral-300 text-neutral-600 hover:border-[var(--rk-red)] hover:text-[var(--rk-red)]",
+              ]}
             >
-              {tab.label}
+              {filter}
             </button>
           ))
         }
       </div>
+      <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-500">
+        {products.length} Designs
+      </p>
     </div>
 
-    <div class="mt-12 overflow-hidden">
-      {
-        tabs.map((tab, idx) => (
-          <div
-            class:list={[
-              "tab-panel transition-all duration-700 ease-out",
-              idx === 0
-                ? "block opacity-100 translate-y-0"
-                : "hidden opacity-0 translate-y-8",
-            ]}
-            data-panel-index={idx}
-          >
-            {tab.type === "table" ? (
-              <div class="overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
-                <table class="w-full text-left border-collapse">
-                  <thead>
-                    <tr class="bg-neutral-900 text-white">
-                      {tab.headers.map((header) => (
-                        <th class="px-8 py-5 text-[11px] font-bold uppercase tracking-widest border-r border-white/10 last:border-0">
-                          {header}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody class="divide-y divide-neutral-100">
-                    {(tab.rows as string[][]).map((row) => (
-                      <tr class="group hover:bg-neutral-50 transition-colors">
-                        {row.map((cell: string, cellIdx: number) => (
-                          <td
-                            class:list={[
-                              "px-8 py-5 text-sm transition-colors",
-                              cellIdx === 0
-                                ? "font-bold text-neutral-900 bg-neutral-50/50 group-hover:bg-neutral-100"
-                                : "text-neutral-600",
-                            ]}
-                          >
-                            {cell}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+    {
+      products.length ? (
+        <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {products.map((product) => (
+            <button
+              type="button"
+              class="product-card group overflow-hidden rounded-2xl border border-neutral-200 bg-white text-left shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[var(--rk-red)] hover:shadow-xl"
+              data-finish={product.finish}
+              data-src={product.src}
+              data-name={product.name}
+              data-size={product.size}
+            >
+              <div class="aspect-[4/5] overflow-hidden bg-neutral-100">
+                <img
+                  src={product.src}
+                  alt={product.name}
+                  class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
               </div>
-            ) : (
-              <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                {tab.rows.map((name) => (
-                  <div class="group flex items-center justify-center rounded-2xl border border-neutral-200 bg-white p-6 text-center transition-all duration-300 hover:border-[var(--rk-red)] hover:shadow-xl hover:shadow-red-900/5 hover:-translate-y-1">
-                    <span class="text-xs font-bold text-neutral-800 transition-colors group-hover:text-[var(--rk-red)] uppercase tracking-[0.1em]">
-                      {name}
-                    </span>
-                  </div>
-                ))}
+              <div class="space-y-1 p-4">
+                <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--rk-red)]">
+                  {product.finish}
+                </p>
+                <h3 class="text-sm font-semibold text-neutral-900 sm:text-base">
+                  {product.name}
+                </h3>
+                <p class="text-xs font-medium uppercase tracking-[0.14em] text-neutral-500">
+                  {product.size}
+                </p>
               </div>
-            )}
-
-            <div class="mt-10 flex items-center justify-center">
-              <a
-                href="/contact"
-                class="px-8 py-4 bg-white border border-neutral-200 rounded-full text-[10px] font-bold uppercase tracking-widest text-neutral-600 hover:bg-[var(--rk-red)] hover:text-white hover:border-transparent transition-all duration-300"
-              >
-                Enquire for {tab.label}
-              </a>
-            </div>
-          </div>
-        ))
-      }
-    </div>
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div class="mt-8 rounded-2xl border border-dashed border-neutral-300 bg-neutral-50 p-8 text-center">
+          <p class="text-sm text-neutral-600">No product images found in `public/images/product`.</p>
+        </div>
+      )
+    }
   </div>
 </section>
 
-<style>
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-</style>
+<div id="product-preview" class="fixed inset-0 z-[90] hidden place-items-center p-4 sm:p-8 md:p-10 grid" aria-hidden="true">
+  <button
+    id="product-preview-backdrop"
+    type="button"
+    class="absolute inset-0 bg-black/75 backdrop-blur-[2px]"
+    aria-label="Close product preview"
+  ></button>
+
+  <div class="relative z-10 w-full max-w-5xl overflow-hidden rounded-3xl bg-white shadow-2xl">
+    <button
+      id="product-preview-close"
+      type="button"
+      class="absolute right-3 top-3 z-20 rounded-full bg-black/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-[var(--rk-red)]"
+    >
+      Close
+    </button>
+
+    <div class="bg-neutral-100">
+      <img id="product-preview-image" src="" alt="" class="h-[58vh] w-full object-contain sm:h-[72vh]" />
+    </div>
+
+    <div class="flex flex-col gap-4 border-t border-neutral-200 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+      <div>
+        <p id="product-preview-finish" class="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--rk-red)]"></p>
+        <h3 id="product-preview-name" class="mt-1 text-lg font-semibold text-neutral-900 sm:text-xl"></h3>
+        <p id="product-preview-size" class="mt-1 text-xs font-semibold uppercase tracking-[0.15em] text-neutral-500"></p>
+      </div>
+      <a href="/contact" class="btn-lux w-full text-center sm:w-auto">Enquire Now</a>
+    </div>
+  </div>
+</div>
 
 <script is:inline>
-  const buttons = Array.from(document.querySelectorAll(".tab-btn"));
-  const panels = Array.from(document.querySelectorAll(".tab-panel"));
+  const filterButtons = Array.from(
+    document.querySelectorAll("[data-product-filter]"),
+  );
+  const cards = Array.from(document.querySelectorAll(".product-card"));
 
-  buttons.forEach((button, index) => {
-    button.addEventListener("click", () => {
-      // Update Buttons
-      buttons.forEach((btn, i) => {
-        if (i === index) {
-          btn.classList.add(
-            "bg-[var(--rk-dark)]",
-            "text-white",
-            "shadow-lg",
-            "shadow-black/20",
-          );
-          btn.classList.remove("text-neutral-500", "hover:bg-neutral-50");
-        } else {
-          btn.classList.remove(
-            "bg-[var(--rk-dark)]",
-            "text-white",
-            "shadow-lg",
-            "shadow-black/20",
-          );
-          btn.classList.add("text-neutral-500", "hover:bg-neutral-50");
-        }
-      });
+  const setActiveFilter = (selectedFilter) => {
+    filterButtons.forEach((button) => {
+      const filter = button.getAttribute("data-product-filter");
+      const isActive = filter === selectedFilter;
 
-      // Update Panels
-      panels.forEach((panel, i) => {
-        if (i === index) {
-          panel.classList.remove("hidden");
-          setTimeout(() => {
-            panel.classList.remove("opacity-0", "translate-y-8");
-            panel.classList.add("opacity-100", "translate-y-0");
-          }, 10);
-        } else {
-          panel.classList.add("hidden", "opacity-0", "translate-y-8");
-          panel.classList.remove("opacity-100", "translate-y-0");
-        }
-      });
+      button.classList.toggle("bg-[var(--rk-dark)]", isActive);
+      button.classList.toggle("text-white", isActive);
+      button.classList.toggle("border-transparent", isActive);
+      button.classList.toggle("text-neutral-600", !isActive);
+      button.classList.toggle("border-neutral-300", !isActive);
     });
+
+    cards.forEach((card) => {
+      const finish = card.getAttribute("data-finish");
+      const shouldShow = selectedFilter === "All" || finish === selectedFilter;
+      card.classList.toggle("hidden", !shouldShow);
+    });
+  };
+
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const filter = button.getAttribute("data-product-filter") || "All";
+      setActiveFilter(filter);
+    });
+  });
+
+  const previewRoot = document.getElementById("product-preview");
+  const previewImage = document.getElementById("product-preview-image");
+  const previewName = document.getElementById("product-preview-name");
+  const previewSize = document.getElementById("product-preview-size");
+  const previewFinish = document.getElementById("product-preview-finish");
+  const previewCloseButton = document.getElementById("product-preview-close");
+  const previewBackdrop = document.getElementById("product-preview-backdrop");
+
+  const openPreview = (card) => {
+    if (!previewRoot || !previewImage || !previewName || !previewSize || !previewFinish) {
+      return;
+    }
+
+    const src = card.getAttribute("data-src") || "";
+    const name = card.getAttribute("data-name") || "Product";
+    const size = card.getAttribute("data-size") || "Premium size";
+    const finish = card.getAttribute("data-finish") || "Glossy";
+
+    previewImage.setAttribute("src", src);
+    previewImage.setAttribute("alt", name);
+    previewName.textContent = name;
+    previewSize.textContent = size;
+    previewFinish.textContent = finish;
+
+    previewRoot.classList.remove("hidden");
+    previewRoot.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  };
+
+  const closePreview = () => {
+    if (!previewRoot || !previewImage) return;
+
+    previewRoot.classList.add("hidden");
+    previewRoot.setAttribute("aria-hidden", "true");
+    previewImage.setAttribute("src", "");
+    previewImage.setAttribute("alt", "");
+    document.body.style.overflow = "";
+  };
+
+  cards.forEach((card) => {
+    card.addEventListener("click", () => openPreview(card));
+  });
+
+  previewCloseButton?.addEventListener("click", closePreview);
+  previewBackdrop?.addEventListener("click", closePreview);
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closePreview();
+    }
   });
 </script>

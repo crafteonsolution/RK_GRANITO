@@ -1,3 +1,14 @@
+---
+import { siteConfig } from "../config/site";
+
+const {
+  contactEmail,
+  contactPhone,
+  headOfficeAddress,
+  manufacturingUnitAddress,
+} = siteConfig;
+---
+
 <section class="section-shell py-20 sm:py-24">
   <div class="grid gap-8 lg:grid-cols-2">
     <div
@@ -39,7 +50,6 @@
             name="phone"
             placeholder="Phone Number (10 digits) *"
             required
-            pattern="[0-9]{10}"
             class="peer w-full rounded-lg border border-neutral-300 px-4 py-3.5 outline-none transition focus:border-[var(--rk-red)] focus:ring-1 focus:ring-[var(--rk-red)]/20"
           />
           <p class="mt-1 hidden text-xs text-red-600 peer-[.is-invalid]:block">
@@ -119,22 +129,43 @@
 
           if (!isValid) return;
 
-          // Simulate submission
           submitBtn.disabled = true;
           btnText.classList.add("hidden");
           btnLoader.classList.remove("hidden");
 
+          if (statusDiv) statusDiv.textContent = "Sending...";
+          const formData = new FormData(form);
+          const payload = Object.fromEntries(formData.entries());
+
           try {
-            // Here you would typically use fetch() to send the data
-            // await fetch('/api/contact', { method: 'POST', ... })
+            const response = await fetch("/api/contact", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+              body: JSON.stringify(payload),
+            });
+            const data = await response.json().catch(() => ({}));
 
-            await new Promise((resolve) => setTimeout(resolve, 1500)); // Demo delay
+            if (!response.ok) {
+              const message =
+                data?.error || "Something went wrong. Please try again.";
+              if (statusDiv) {
+                statusDiv.textContent = message;
+                statusDiv.className =
+                  "rounded-lg p-4 text-sm font-medium bg-red-100 text-red-800";
+                statusDiv.classList.remove("hidden");
+              }
+              return;
+            }
 
-            statusDiv.textContent =
-              "Thank you! Your message has been sent successfully.";
-            statusDiv.className =
-              "rounded-lg p-4 text-sm font-medium bg-green-100 text-green-800";
-            statusDiv.classList.remove("hidden");
+            if (statusDiv) {
+              statusDiv.textContent = "Thanks! Your message has been sent.";
+              statusDiv.className =
+                "rounded-lg p-4 text-sm font-medium bg-green-100 text-green-800";
+              statusDiv.classList.remove("hidden");
+            }
             form.reset();
           } catch (error) {
             statusDiv.textContent =
@@ -167,29 +198,31 @@
           <p class="text-xs uppercase tracking-[0.2em] text-neutral-400">
             Phone Number
           </p>
-          <p class="mt-2 text-lg">+91 9106865089</p>
+          <p class="mt-2 text-lg">{contactPhone}</p>
         </div>
         <div>
           <p class="text-xs uppercase tracking-[0.2em] text-neutral-400">
             Email Address
           </p>
-          <p class="mt-2 text-lg">Export@Rkgranito.com</p>
+          <p class="mt-2 text-lg">{contactEmail}</p>
         </div>
         <div>
           <p class="text-xs uppercase tracking-[0.2em] text-neutral-400">
             Head Office
           </p>
-          <p class="mt-2 text-lg">
-            101 Madhav, 150 Feet Ring Road,<br /> Ayodhya Chowk, Rajkot 360007
-          </p>
+          <p
+            class="mt-2 text-lg"
+            set:html={headOfficeAddress?.replace(", ", ",<br />")}
+          />
         </div>
         <div>
           <p class="text-xs uppercase tracking-[0.2em] text-neutral-400">
             Factory Address
           </p>
-          <p class="mt-2 text-lg">
-            Lilapar Chokadi, Navagam Canal Road,<br /> Morbi 363641
-          </p>
+          <p
+            class="mt-2 text-lg"
+            set:html={manufacturingUnitAddress?.replace(", ", ",<br />")}
+          />
         </div>
       </div>
     </div>

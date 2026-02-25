@@ -1,0 +1,100 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import ProductTabs from "../components/ProductTabs.astro";
+
+const featuredProducts = [
+    { name: "Arctic White", category: "GVT", img: "/images/hero/head4.jpg" },
+    { name: "Royal Marfil", category: "PGVT", img: "/images/hero/head5.jpg" },
+    { name: "Stone Grey", category: "Parking", img: "/images/hero/head6.jpg" },
+    {
+        name: "Celestial Blue",
+        category: "Ceramic",
+        img: "/images/hero/head4.jpg",
+    },
+];
+---
+
+<MainLayout
+    title="Our Products | RK Granito"
+    description="Explore our extensive range of high-quality porcelain and vitrified tiles designed for elegance and durability."
+>
+    <!-- Hero Section -->
+    <section class="relative h-[45vh] lg:h-[60vh] min-h-[400px]">
+        <img
+            src="/images/hero/head5.jpg"
+            alt="RK Granito Products"
+            class="absolute inset-0 h-full w-full object-cover"
+        />
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div
+            class="relative section-shell flex h-full items-center justify-center pt-20"
+        >
+            <div class="text-center">
+                <h1
+                    class="reveal text-4xl font-bold tracking-[0.2em] text-white sm:text-6xl md:text-7xl uppercase"
+                >
+                    Our Products
+                </h1>
+                <p
+                    class="mt-4 text-neutral-300 max-w-2xl mx-auto reveal tracking-wide"
+                >
+                    Standard-setting surface solutions for modern architecture.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Categories Section (Tabs) -->
+    <div class="pt-16">
+        <ProductTabs />
+    </div>
+
+    <!-- Featured Highlights -->
+    <section class="section-shell py-20 bg-neutral-100/50 rounded-[3rem] my-12">
+        <div class="text-center mb-16 reveal">
+            <p
+                class="text-[10px] font-bold uppercase tracking-[0.4em] text-[var(--rk-red)] mb-4"
+            >
+                Inspiration
+            </p>
+            <h2 class="text-3xl font-bold text-neutral-900 sm:text-5xl">
+                Featured Masterpieces
+            </h2>
+        </div>
+
+        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {
+                featuredProducts.map((product) => (
+                    <div class="reveal group relative overflow-hidden rounded-2xl bg-white shadow-lg shadow-neutral-200/50 transition-all hover:-translate-y-2">
+                        <div class="aspect-[4/5] overflow-hidden">
+                            <img
+                                src={product.img}
+                                alt={product.name}
+                                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            />
+                        </div>
+                        <div class="p-6">
+                            <p class="text-[10px] font-bold uppercase tracking-widest text-[var(--rk-red)] mb-1">
+                                {product.category}
+                            </p>
+                            <h3 class="text-lg font-bold text-neutral-900">
+                                {product.name}
+                            </h3>
+                            <div class="mt-4 flex items-center justify-between">
+                                <span class="text-xs text-neutral-500 font-medium">
+                                    Standard Size
+                                </span>
+                                <a
+                                    href="/contact"
+                                    class="text-[var(--rk-red)] font-bold text-xs uppercase tracking-wider hover:underline"
+                                >
+                                    Enquire
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </section>
+</MainLayout>
