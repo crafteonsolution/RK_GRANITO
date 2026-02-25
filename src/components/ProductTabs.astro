@@ -1,5 +1,8 @@
 ---
-import { readdirSync } from "node:fs";
+import { readdirSync, existsSync } from "node:fs";
+import path from "node:path";
+
+const PRODUCT_DIR = path.join(process.cwd(), "public", "images", "product");
 
 const FINISH_ORDER = ["Glossy", "High Glossy", "Matt"] as const;
 type Finish = (typeof FINISH_ORDER)[number];
@@ -11,7 +14,7 @@ type Product = {
   src: string;
 };
 
-const PRODUCT_DIR = new URL("../../public/images/product/", import.meta.url);
+// const PRODUCT_DIR = new URL("../../public/images/product/", import.meta.url);
 const IMAGE_EXT_REGEX = /\.(avif|webp|png|jpe?g)$/i;
 
 const toBaseName = (filename: string) => {
@@ -44,9 +47,20 @@ const toDisplayName = (baseName: string) =>
     .replace(/\s{2,}/g, " ")
     .trim();
 
-const files = readdirSync(PRODUCT_DIR, { withFileTypes: true })
-  .filter((entry) => entry.isFile() && IMAGE_EXT_REGEX.test(entry.name))
-  .map((entry) => entry.name);
+let files: string[] = [];
+
+try {
+  if (!existsSync(PRODUCT_DIR)) {
+    console.warn("[ProductTabs] Directory not found:", PRODUCT_DIR);
+  } else {
+    files = readdirSync(PRODUCT_DIR, { withFileTypes: true })
+      .filter((entry) => entry.isFile() && IMAGE_EXT_REGEX.test(entry.name))
+      .map((entry) => entry.name);
+  }
+} catch (error) {
+  console.warn("[ProductTabs] Could not read product image directory:", PRODUCT_DIR, error);
+  files = [];
+}
 
 const products: Product[] = files
   .map((filename) => {
@@ -84,7 +98,7 @@ const filters = ["All", ...FINISH_ORDER] as const;
     </p>
   </div>
 
-  <div class="reveal mt-10 rounded-[2rem] border border-neutral-200/80 bg-white p-4 shadow-xl shadow-neutral-200/40 sm:p-8">
+  <div class="mt-10 rounded-[2rem] border border-neutral-200/80 bg-white p-4 shadow-xl shadow-neutral-200/40 sm:p-8">
     <div class="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-200 pb-5">
       <div class="flex flex-wrap gap-2">
         {
